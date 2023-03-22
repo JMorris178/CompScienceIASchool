@@ -17,17 +17,17 @@ public class Interfaces {
             if (choice == 1) {
                 System.out.println("Please input the new MPG in the form of a float (eg. 1.0)");
                 float newMPG = userInput.nextFloat();
-                Utilisation.replaceLines(0,newMPG); //line 0 is always the MPG, so it can easily be accessed and changed.
+                FileUtilisation.replaceLines(0,newMPG); //line 0 is always the MPG, so it can easily be accessed and changed.
                 car.setMPG(newMPG); //updates it in the constructor
             } else if (choice == 2) {
                 System.out.println("Please input the new fuel tank capacity in the form of a float (eg. 1.0)");
                 float newFTC = userInput.nextFloat();
-                Utilisation.replaceLines(1,newFTC);
+                FileUtilisation.replaceLines(1,newFTC);
                 car.setFuelTank(newFTC);
             } else if (choice == 3) {
                 System.out.println("Please input the new fuel cost in the form of a float (eg. 1.0)");
                 float newFC = userInput.nextFloat();
-                Utilisation.replaceLines(2,newFC);
+                FileUtilisation.replaceLines(2,newFC);
                 car.setPrices(newFC);
             } else {
                 System.out.println("That choice is invalid");
@@ -39,7 +39,7 @@ public class Interfaces {
     public static void mileageCalcInterface(Calendar calendar, Settings car){
         boolean repeat = true;
         while (repeat) {
-            System.out.println("Do you want to change 1. The distance travelled today, or 2. The distance travelled on another date.If you want to exit, type a number above 2.");
+            System.out.println("Do you want to 1. Change the distance travelled today, 2. Change the distance travelled on another date, 3. view the miles travelled today or 4, view the miles travelled on another day? If you want to exit, type a number above 5.");
             Scanner userInput = new Scanner(System.in);
             ArrayList record = new ArrayList<>();
             int choice = userInput.nextInt();
@@ -55,7 +55,7 @@ public class Interfaces {
                 float miles = userInput.nextInt();
                 float fuelCon = Utilisation.findFuelConsumption(miles);
                 car.setFuelTank((car.getFuelTank())-fuelCon);
-                Utilisation.replaceLines(1,(car.getFuelTank())-fuelCon);
+                FileUtilisation.replaceLines(1,(car.getFuelTank())-fuelCon);
                 if (car.getFuelTank() <= 0) {
                     refillRequired = true; //sets the refill to true
                     Utilisation.carOutOfFuel(car); //resets the fuel capacity, with the remainder taken away
@@ -76,7 +76,7 @@ public class Interfaces {
                 if(extraValue==true){
                     record.add(remainderInTank); //only adds remainder in tank if it's needed.
                 }
-                Utilisation.addToFile(record);
+                FileUtilisation.addToFile(record);
             } else if (choice == 2) {
                 System.out.println("Please input the following in numerical form - the date of the month (eg : 02, 10, 30)");
                 int day = userInput.nextInt();
@@ -88,7 +88,7 @@ public class Interfaces {
                 float miles = userInput.nextInt();
                 float fuelCon = Utilisation.findFuelConsumption(miles);
                 car.setFuelTank((car.getFuelTank())-fuelCon);
-                Utilisation.replaceLines(1,(car.getFuelTank())-fuelCon);
+                FileUtilisation.replaceLines(1,(car.getFuelTank())-fuelCon);
                 if (car.getFuelTank() <= 0) {
                     refillRequired = true; //sets the refill to true
                     Utilisation.carOutOfFuel(car); //resets the fuel capacity, with the remainder taken away
@@ -108,16 +108,21 @@ public class Interfaces {
                 if(extraValue==true){
                     record.add(remainderInTank); //only adds remainder in tank if it's needed.
                 }
-                Utilisation.addToFile(record);
+                FileUtilisation.addToFile(record);
 
-            } else {
+            } else if (choice == 3){
+
+            }else if(choice == 4){
+
+            }else {
                 System.out.println("That choice is invalid");
                 repeat = false;
             }
         }
     }
 
-    public static void budgetingSheetInterface(){
+    public static void budgetingSheetInterface(Settings car){
+
 
     }
 }

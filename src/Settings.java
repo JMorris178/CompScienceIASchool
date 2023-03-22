@@ -3,7 +3,6 @@ public class Settings {
     float MPG;
     float fuelTank;
     float prices;
-
     float maxCap;
 
 

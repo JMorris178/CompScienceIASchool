@@ -27,18 +27,18 @@ public class InitialSetup {
                 tempToAddToFile.add(tempFuelCost);
                 for (int i = 0; i < 3; i++){ //Loop allows each part of the users input to be added to the database
                     Object x = tempToAddToFile.get(i);
-                    Utilisation.addToFile(x);
+                    FileUtilisation.addToFile(x);
                 }
-                Utilisation.addToFile(tempFuelTank); //adds a copy of the fuel tank as a max - so it will return to this if it runs out
+                FileUtilisation.addToFile(tempFuelTank); //adds a copy of the fuel tank as a max - so it will return to this if it runs out
                 return (tempToAddToFile);
             } else {
                 System.out.println("File exists"); //If the file exists.
             }
             //Now the file is set up (or it already exists), the different settings are saved to the constructor
-            String tempPassMPG = String.valueOf(Utilisation.readFromFile(0));
-            String tempPassFuelTank = String.valueOf(Utilisation.readFromFile(1));
-            String tempPassFuelCost = String.valueOf(Utilisation.readFromFile(2));
-            String tempPassMaxCap = String.valueOf(Utilisation.readFromFile(3));
+            String tempPassMPG = String.valueOf(FileUtilisation.readFromFile(0));
+            String tempPassFuelTank = String.valueOf(FileUtilisation.readFromFile(1));
+            String tempPassFuelCost = String.valueOf(FileUtilisation.readFromFile(2));
+            String tempPassMaxCap = String.valueOf(FileUtilisation.readFromFile(3));
             car.setMPG(parseFloat(tempPassMPG));
             car.setFuelTank(parseFloat(tempPassFuelTank));
             car.setPrices(parseFloat(tempPassFuelCost));
