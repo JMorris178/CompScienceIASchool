@@ -49,32 +49,7 @@ public class Utilisation {
         }
     }
 
-    public static void findInFile(String searchedItem[]){
-        try {
-            FileReader fr = new FileReader("userData");
-            BufferedReader br = new BufferedReader(fr);
-            int count = 0;
-            boolean found = false;
-            String line = br.readLine();
-            while (line != null) { //Passes through every line in the file, and when it is found it returns the index where it was found
-                line = br.readLine();
-                if(line == null) { //avoids an error where the line being null clashes with the rest of the code
-                } else {
-                    System.out.println(line);
-                    String[] parts = line.split(", ");
-                    if (searchedItem[0].equals(parts[0]) && searchedItem[1].equals(parts[1]) && searchedItem[2].equals(parts[2])) { //checks to see if the dates line up with the searched dates, meaning the dates act as an identifier
-                        found = true;
-                        int foundAtIndex = count;
-                        System.out.println("found at " + foundAtIndex);
-                    }
-                }
-                count++;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-    }
 
     public static float costCalculator(Settings car){
         float total = car.getPrices() * car.getFuelTank(); //Multiplies the cost per gallon by the capacity of fuel tank to find the cost for a full refuel

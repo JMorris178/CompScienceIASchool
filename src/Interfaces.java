@@ -39,9 +39,10 @@ public class Interfaces {
     public static void mileageCalcInterface(Calendar calendar, Settings car){
         boolean repeat = true;
         while (repeat) {
-            System.out.println("Do you want to 1. Change the distance travelled today, 2. Change the distance travelled on another date, 3. view the miles travelled today or 4, view the miles travelled on another day? If you want to exit, type a number above 5.");
+            System.out.println("Do you want to 1. Change the distance travelled today, 2. Change the distance travelled on another date, 3. view the data from today or 4, view the data from another day? If you want to exit, type a number above 5.");
             Scanner userInput = new Scanner(System.in);
             ArrayList record = new ArrayList<>();
+            ArrayList<String> passer = new ArrayList<>(); //creates a new arraylist to pass data through that isn't the records
             int choice = userInput.nextInt();
             boolean refillRequired = false;
             boolean extraValue = false;
@@ -69,7 +70,6 @@ public class Interfaces {
                         Utilisation.carRefuel(car);
                     }
                 }
-
                 record.add(miles);
                 record.add(fuelCon);
                 record.add(refillRequired);
@@ -102,6 +102,9 @@ public class Interfaces {
                         Utilisation.carRefuel(car);
                     }
                 }
+                record.add(day);
+                record.add(month);
+                record.add(year);
                 record.add(miles);
                 record.add(fuelCon);
                 record.add(refillRequired);
@@ -111,9 +114,33 @@ public class Interfaces {
                 FileUtilisation.addToFile(record);
 
             } else if (choice == 3){
-
+                passer.add(String.valueOf((calendar.get(Calendar.DAY_OF_MONTH))));
+                passer.add(String.valueOf((calendar.get(Calendar.MONTH)) + 1));
+                passer.add(String.valueOf(calendar.get(Calendar.YEAR)));
+                System.out.println("You travelled this many miles " + FileUtilisation.returnFromFile(passer,3)); //the miles travelled is always at index 4
+                System.out.println("You used this much fuel " + FileUtilisation.returnFromFile(passer,4));
+                if (String.valueOf(FileUtilisation.returnFromFile(passer,5)).equals("true")){
+                    System.out.println("You refuelled today");
+                }else{
+                    System.out.println("you didn't refuel today");
+                }
             }else if(choice == 4){
-
+                System.out.println("Please input the following in numerical form - the date of the month (eg : 02, 10, 30)");
+                int day = userInput.nextInt();
+                System.out.println("Please input the following in numerical form - the month (eg : 02, 10, 08)");
+                int month = userInput.nextInt();
+                System.out.println("Please input the following in numerical form - the year (eg : 2023, 1973)");
+                int year = userInput.nextInt();
+                passer.add(String.valueOf(day));
+                passer.add(String.valueOf(month));
+                passer.add(String.valueOf(year));
+                System.out.println("You travelled this many miles " + FileUtilisation.returnFromFile(passer,3)); //the miles travelled is always at index 4
+                System.out.println("You used this much fuel " + FileUtilisation.returnFromFile(passer,4));
+                if (String.valueOf(FileUtilisation.returnFromFile(passer,5)).equals("true")){
+                    System.out.println("You refuelled today");
+                }else{
+                    System.out.println("you didn't refuel today");
+                }
             }else {
                 System.out.println("That choice is invalid");
                 repeat = false;

@@ -95,4 +95,58 @@ public class FileUtilisation {
                 System.out.println("Problem reading file.");
             }
         }
+
+    public static void findInFile(ArrayList<String> searchedItem){
+        try {
+            FileReader fr = new FileReader("userData");
+            BufferedReader br = new BufferedReader(fr);
+            int count = 0;
+            boolean found = false;
+            String line = br.readLine();
+            while (line != null) { //Passes through every line in the file, and when it is found it returns the index where it was found
+                line = br.readLine();
+                if(line == null) { //avoids an error where the line being null clashes with the rest of the code
+                } else {
+                    String[] parts = line.split(", ");
+                    if ((searchedItem.get(0)).equals(parts[0]) && (searchedItem.get(1)).equals(parts[1]) && (searchedItem.get(2)).equals(parts[2])) { //checks to see if the dates line up with the searched dates, meaning the dates act as an identifier
+                        found = true;
+                        int foundAtIndex = count;
+                        System.out.println("found at " + foundAtIndex);
+                    }
+                }
+                count++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static Object returnFromFile (ArrayList<String> searchedItem, int index){
+        try {
+            FileReader fr = new FileReader("userData");
+            BufferedReader br = new BufferedReader(fr);
+            int count = 0;
+            boolean found = false;
+            String returnData = "";
+            String line = br.readLine();
+            while (line != null) { //Passes through every line in the file, and when it is found it returns the index where it was found
+                line = br.readLine();
+                if(line == null) { //avoids an error where the line being null clashes with the rest of the code
+                } else {
+                    String[] parts = line.split(", ");
+                    if ((searchedItem.get(0)).equals(parts[0]) && (searchedItem.get(1)).equals(parts[1]) && (searchedItem.get(2)).equals(parts[2])) { //checks to see if the dates line up with the searched dates, meaning the dates act as an identifier
+                        found = true;
+                        int foundAtIndex = count;
+                        returnData = parts[index];
+                    }
+                }
+                count++;
+            }
+            return(returnData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    return(null);
+    }
 }
