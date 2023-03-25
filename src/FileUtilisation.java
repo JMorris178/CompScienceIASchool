@@ -69,9 +69,7 @@ public class FileUtilisation {
                 StringBuffer inputBuffer = new StringBuffer();
                 String line;
                 int count = 0;
-
                 while ((line = file.readLine()) != null) {
-
                     if (count == lineNum) {
                         line = replacementLine.toString();
                         inputBuffer.append(line);
@@ -96,12 +94,46 @@ public class FileUtilisation {
             }
         }
 
-    public static void findInFile(ArrayList<String> searchedItem){
+    public static void replaceLines(int lineNum, ArrayList<String> replacementLine) {
+        try {
+            // input the (modified) file content to the StringBuffer "input"
+            BufferedReader file = new BufferedReader(new FileReader("userData"));
+            StringBuffer inputBuffer = new StringBuffer();
+            String line;
+            int count = 0;
+
+            while ((line = file.readLine()) != null) {
+                if (count == lineNum) {
+                    line = replacementLine.toString();
+                    line = line.replace("[",""); //removes the two brackets so it's the same as the rest of the records
+                    line = line.replace("]",",");//replaces the last one with a comma
+                    inputBuffer.append(line);
+                    inputBuffer.append('\n');
+
+                } else {
+                    line = readFromFile(count).toString(); // Finds the original line in the original file then copies it.
+                    inputBuffer.append(line);
+                    inputBuffer.append('\n');
+                }
+                count++;
+            }
+            file.close();
+
+            // write the new string with the replaced line OVER the same file
+            FileOutputStream fileOut = new FileOutputStream("userData");
+            fileOut.write(inputBuffer.toString().getBytes());
+            fileOut.close();
+        }
+
+        catch(Exception e){
+            System.out.println("Problem reading file.");
+        }
+    }
+
+    public static boolean findInFile(ArrayList<String> searchedItem){
         try {
             FileReader fr = new FileReader("userData");
             BufferedReader br = new BufferedReader(fr);
-            int count = 0;
-            boolean found = false;
             String line = br.readLine();
             while (line != null) { //Passes through every line in the file, and when it is found it returns the index where it was found
                 line = br.readLine();
@@ -109,9 +141,29 @@ public class FileUtilisation {
                 } else {
                     String[] parts = line.split(", ");
                     if ((searchedItem.get(0)).equals(parts[0]) && (searchedItem.get(1)).equals(parts[1]) && (searchedItem.get(2)).equals(parts[2])) { //checks to see if the dates line up with the searched dates, meaning the dates act as an identifier
-                        found = true;
-                        int foundAtIndex = count;
-                        System.out.println("found at " + foundAtIndex);
+                        return true;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static int findLineNum(ArrayList<String> searchedItem) { //Variaton of FindInFile but returns the line number instead.
+        try {
+            FileReader fr = new FileReader("userData");
+            BufferedReader br = new BufferedReader(fr);
+            int count = 0;
+            String line = br.readLine();
+            while (line != null) { //Passes through every line in the file, and when it is found it returns the index where it was found
+                line = br.readLine();
+                if(line == null) { //avoids an error where the line being null clashes with the rest of the code
+                } else {
+                    String[] parts = line.split(", ");
+                    if ((searchedItem.get(0)).equals(parts[0]) && (searchedItem.get(1)).equals(parts[1]) && (searchedItem.get(2)).equals(parts[2])) { //checks to see if the dates line up with the searched dates, meaning the dates act as an identifier
+                        return count;
                     }
                 }
                 count++;
@@ -119,7 +171,7 @@ public class FileUtilisation {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return 0;
     }
 
     public static Object returnFromFile (ArrayList<String> searchedItem, int index){

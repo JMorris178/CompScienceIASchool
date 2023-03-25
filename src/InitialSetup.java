@@ -1,16 +1,14 @@
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 import static java.lang.Float.parseFloat;
 
 public class InitialSetup {
-    public static ArrayList<Float> createNewFile(Settings car){
+    public static void createNewFile(Settings car){
         Scanner input = new Scanner(System.in);
-        ArrayList<Float> tempToAddToFile = new ArrayList<Float>(); //allows the program to push the settings data to the file if needed
+        ArrayList<Float> tempToAddToFile = new ArrayList<>(); //allows the program to push the settings data to the file if needed
         try {
             File fileCreate = new File("userData");
             if (fileCreate.createNewFile()) { //If the file doesn't exist
@@ -30,7 +28,7 @@ public class InitialSetup {
                     FileUtilisation.addToFile(x);
                 }
                 FileUtilisation.addToFile(tempFuelTank); //adds a copy of the fuel tank as a max - so it will return to this if it runs out
-                return (tempToAddToFile);
+
             } else {
                 System.out.println("File exists"); //If the file exists.
             }
@@ -47,7 +45,6 @@ public class InitialSetup {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return (tempToAddToFile);
     }
 
 
