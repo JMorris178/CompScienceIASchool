@@ -2,6 +2,7 @@
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -14,8 +15,6 @@ public class Utilisation {
         float temp;
         try (Stream<String> lines = Files.lines(Paths.get("userData"))) {
             line = lines.skip(n).findFirst().get();
-            System.out.println(MT);
-            System.out.println(Float.valueOf(line));
             temp = MT/Float.valueOf(line);
             return(temp);
         } catch (IOException e) {
@@ -61,7 +60,82 @@ public class Utilisation {
         return total;
     }
 
+    public static boolean refuelCheck(ArrayList<String> passer){
+        boolean returnValue;
+        if(FileUtilisation.returnFromFile(passer, 6).equals("true")){
+            returnValue = true;
+        }else{
+            returnValue = false;
+        }
+        return returnValue;
+    }
 
+    public static float costOverTime(Settings car, Calendar calendar, ArrayList<String> passer){
+        float total = 0;
+        for(int i = 0; i<7; i++){
+        passer = new ArrayList<>(); //resets Passer at the start of each loop
+        calendar.add(Calendar.DATE, -1);
+        passer.add(String.valueOf((calendar.get(Calendar.DAY_OF_MONTH))));
+        passer.add(String.valueOf((calendar.get(Calendar.MONTH)) + 1));
+        passer.add(String.valueOf(calendar.get(Calendar.YEAR)));
+        if (Utilisation.refuelCheck(passer)) { //checks if the index at 5 has a value, and if it does it carries out the following as there was a refuel
+            if (FileUtilisation.returnFromFile(passer, 6).equals("true")) { //checks if index 6 is true. If it is then there's a remainder in index 7, which it will then pass through to the cost calculator
+                float remainderInTank = Float.valueOf((String) FileUtilisation.returnFromFile(passer, 7)); //Casts the returned value to a string so it can then be converted into a float.
+                if (Utilisation.costCalculator(car) == 0) {
+                    total = total + 0;
+                } else {
+                    total = total + Utilisation.costCalculator(car, remainderInTank);
+                }
+            } else {
+                if (Utilisation.costCalculator(car) == 0) {
+                    total = total + 0;
+                } else {
+                    total = total + Utilisation.costCalculator(car);
+                }
+            }
+
+
+        } else {
+            total = total + 0;
+        }
+    }
+        return total;
+    }
+
+    public static float costOverTime(Settings car, Calendar calendar, ArrayList<String> passer, int repeats){
+        float total = 0;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        calendar.add(Calendar.DATE, -(day));//sets the calendar back to the start of the month
+        for(int i = 0; i<repeats; i++){
+            passer = new ArrayList<>(); //resets Passer at the start of each loop
+
+            calendar.add(Calendar.DATE, +1);
+            passer.add(String.valueOf((calendar.get(Calendar.DAY_OF_MONTH))));
+            passer.add(String.valueOf((calendar.get(Calendar.MONTH)) + 1));
+            passer.add(String.valueOf(calendar.get(Calendar.YEAR)));
+            if (Utilisation.refuelCheck(passer)) { //checks if the index at 5 has a value, and if it does it carries out the following as there was a refuel
+                if (FileUtilisation.returnFromFile(passer, 6).equals("true")) { //checks if index 6 is true. If it is then there's a remainder in index 7, which it will then pass through to the cost calculator
+                    float remainderInTank = Float.valueOf((String) FileUtilisation.returnFromFile(passer, 7)); //Casts the returned value to a string so it can then be converted into a float.
+                    if (Utilisation.costCalculator(car) == 0) {
+                        total = total + 0;
+                    } else {
+                        total = total + Utilisation.costCalculator(car, remainderInTank);
+                    }
+                } else {
+                    if (Utilisation.costCalculator(car) == 0) {
+                        total = total + 0;
+                    } else {
+                        total = total + Utilisation.costCalculator(car);
+                    }
+                }
+
+
+            } else {
+                total = total + 0;
+            }
+        }
+        return(total);
+    }
 
 }
 
